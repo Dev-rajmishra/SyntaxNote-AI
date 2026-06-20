@@ -28,8 +28,9 @@ export async function signUp(formData: FormData) {
     email,
     password,
     options: {
-      data: { name },
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}/auth/callback`,
+      data: {
+        name,
+      },
     },
   });
 
@@ -41,5 +42,5 @@ export async function signUp(formData: FormData) {
   }
 
   revalidatePath("/", "layout");
-  redirect("/check-email");
+  redirect("/dashboard");
 };
