@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { User, Lock, X, Link } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { signUp } from "../../api/v1/auth/signUp/route";
+import { signUp } from "../../api/v1/auth/signUp/action";
 
 interface SignUpProps {
   onAuthSuccess?: (email: string) => void;
