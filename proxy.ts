@@ -16,7 +16,8 @@ export async function proxy(request: NextRequest) {
         getAll() {
           return request.cookies.getAll();
         },
-        setAll(cookiesToSet, headers) {
+        // setAll ONLY receives cookiesToSet — no second headers argument in @supabase/ssr
+        setAll(cookiesToSet) {
           // Sync cookies back to the mutating request object
           cookiesToSet.forEach(({ name, value }) =>
             request.cookies.set(name, value),
@@ -29,19 +30,16 @@ export async function proxy(request: NextRequest) {
           cookiesToSet.forEach(({ name, value, options }) =>
             supabaseResponse.cookies.set(name, value, options),
           );
-          // Append required headers
-          Object.entries(headers).forEach(([key, value]) =>
-            supabaseResponse.headers.set(key, value),
-          );
         },
       },
     },
   );
 
-  // 3. IMPORTANT: Safely pull the parsed user metadata claims package
-  // Do not delete or move this, as it handles critical background token refreshing!
-  const { data } = await supabase.auth.getClaims();
-  const user = data?.claims;
+  // 3. IMPORTANT: Call getUser() to trigger session token refresh.
+  // This MUST run on every request — it silently refreshes the auth token
+  // stored in cookies so that server-side createClient() calls in API routes
+  // can always find a valid session.
+  const { data: { user } } = await supabase.auth.getUser();
   const isLoggedIn = !!user;
 
   const { pathname } = request.nextUrl;
@@ -52,8 +50,8 @@ export async function proxy(request: NextRequest) {
     pathname.startsWith("/dashboard") ||
     pathname.startsWith("/notes") ||
     pathname.startsWith("/text-note") ||
-    pathname.startsWith("/markdown-note") ||
-    pathname.startsWith("/white-board");
+    pathname.startsWith("/profile") ||
+    pathname.startsWith("/settings");
   const isAuthPage =
      pathname === "/signup" || pathname === "/sign-in";
 
@@ -67,18 +65,22 @@ export async function proxy(request: NextRequest) {
   // Rule B: Auth Page Guard — Prevent logged-in users from viewing login forms
   if (isAuthPage && isLoggedIn) {
     const url = request.nextUrl.clone();
-    url.pathname = "/dashboard";
+    url.pathname = "/text-note";
     return NextResponse.redirect(url);
   }
 
-  // Rule C: Root URL "/" Router — Handle dynamic structural layout switching
-  if (pathname === "/") {
+  // Rule C: Root URL "/" & "/dashboard" Router — Redirect to text-note
+  if (pathname === "/" || pathname === "/dashboard") {
     if (isLoggedIn) {
       const url = request.nextUrl.clone();
-      url.pathname = "/dashboard";
+      url.pathname = "/text-note";
       return NextResponse.redirect(url);
     } else {
-      // Safely map guests to the unauthenticated marketing layout asset folder underneath the hood
+      if (pathname === "/dashboard") {
+        const url = request.nextUrl.clone();
+        url.pathname = "/sign-in";
+        return NextResponse.redirect(url);
+      }
       return NextResponse.rewrite(new URL("/", request.url));
     }
   }
@@ -95,8 +97,6 @@ export const config = {
     "/dashboard/:path*",
     "/notes/:path*",
     "/text-note/:path*",
-    "/markdown-note/:path*",
-    "/white-board/:path*",
     "/signup",
     "/sign-in",
     "/service"
