@@ -1,6 +1,6 @@
 # 📓 SyntaxNote
 
-A modern, interactive Markdown note-taking application designed for students, developers, writers, and professionals to capture ideas, organize knowledge, and create beautifully structured notes.
+A modern, interactive note-taking application designed for students, developers, writers, and professionals to capture ideas, organize knowledge, and create beautifully structured notes.
 
 **Live Demo:** [syntaxnote.appwrite.network](https://syntaxnote.appwrite.network)
 
@@ -16,7 +16,7 @@ A modern, interactive Markdown note-taking application designed for students, de
 ### 📝 Rich Note Management
 - **Doodle Canvas**: Sketch and draw directly on your notes with interactive canvas tools
 - **Draggable Post-its**: Create, drag, and arrange colorful sticky notes anywhere on your workspace
-- **Markdown Support**: Full Markdown editor for formatting and structuring your content
+- **Text Editor Support**: Full text editor for formatting and structuring your content
 - **Rich Text Editing**: Powered by TipTap editor with extensive formatting capabilities
 
 ### 🔐 User Authentication & Sync
@@ -121,9 +121,6 @@ SyntaxNote/
   - Real-time database synchronization
   - User management
 
-### Drawing & Canvas
-- **[tldraw](https://www.tldraw.com)** - Collaborative whiteboard library
-- **[canvas-confetti](https://www.npmjs.com/package/canvas-confetti) - Celebration animations
 
 ### Additional Libraries
 - **[Motion](https://motion.dev)** - Animation library
@@ -170,8 +167,6 @@ Learn more in the [Next.js deployment documentation](https://nextjs.org/docs/app
 
 ### Features in Action
 - **Format Text**: Use Markdown syntax or toolbar for bold, italic, lists, code blocks
-- **Add Images**: Embed images directly in your notes
-- **Create Sketches**: Use the doodle canvas for visual note-taking
 - **Organize**: Drag sticky notes to organize your workspace
 - **Auto-Save**: Changes are automatically saved to your workspace
 
@@ -222,9 +217,7 @@ npm run lint     # Run ESLint
 - ✅ Basic note editing with Markdown
 - ✅ Sticky note management
 - ✅ User authentication
-- 🚧 Advanced collaboration features
-- 🚧 Offline mode
-- 🚧 Export to PDF/Word
+- 🚧 Export to HTML
 
 ### Future Enhancements
 - [ ] Real-time collaborative editing
@@ -246,7 +239,7 @@ This project is open source and available under the MIT License.
 
 - **Issues**: [GitHub Issues](https://github.com/imrajmishra/SyntaxNote/issues)
 - **Discussions**: [GitHub Discussions](https://github.com/imrajmishra/SyntaxNote/discussions)
-- **Email**: [Open an issue for contact info]
+- **Email**: [(raj212558@gmail.com)]
 
 ---
 
